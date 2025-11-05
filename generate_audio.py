@@ -17,7 +17,13 @@ OUTPUT_FILE = f"French_audios/French_{timestamp}"
 field_splitter = r"=*#&^!="
 word_splitter = r"$%d82@$="
 
-df_selected = pd.read_csv('wordlist.csv')
+df_selected = pd.read_excel('wordlist.xlsx')
+
+# append new easy word list
+with open('./wl_data/easy_words.txt', 'a+') as f:
+    f.write('\n')
+    f.write('\n'.join(df_selected[df_selected['weight'] == 0]['word']))
+    f.write('\n')
 
 df_selected = df_selected[df_selected['weight'] > 0]
 

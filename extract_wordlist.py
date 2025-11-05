@@ -6,6 +6,8 @@ from pydub import AudioSegment
 from mutagen.id3 import ID3, USLT
 import datetime
 
+from utils import get_easy_word_list
+
 # Parameters
 WORD_PAUSE = 1000
 SENTENCE_PAUSE = 2500
@@ -69,6 +71,10 @@ df['is_selected'] = df['last_practice'].apply(is_selected_for_listening_list)
 df['weight'] = df['practiced_time'].apply(get_practiced_time)
 df['word'] = df['word'].apply(correct_curl_in_word)
 
-df_selected = df[df['is_selected']]
+df = df[df['is_selected']]
 
-df.to_csv('wordlist.csv')
+# filter easy words
+easy_words = get_easy_word_list()
+df = df[~df['word'].isin(easy_words)]
+
+df.to_excel('wordlist.xlsx')
